@@ -1,4 +1,5 @@
 include(CMakeParseArguments)
+include(FindPkgConfig)
 
 # Debugging function
 function(ocv_cmake_dump_vars)
@@ -405,6 +406,8 @@ endmacro()
 macro(CHECK_MODULE module_name define)
   set(${define} 0)
   if(PKG_CONFIG_FOUND)
+    
+    message("================HAVE pkgconfig")
     set(ALIAS               ALIASOF_${module_name})
     set(ALIAS_FOUND                 ${ALIAS}_FOUND)
     set(ALIAS_INCLUDE_DIRS   ${ALIAS}_INCLUDE_DIRS)
@@ -433,6 +436,7 @@ macro(CHECK_MODULE module_name define)
       list(APPEND HIGHGUI_LIBRARIES ${${ALIAS_LIBRARIES}})
     endif()
   endif()
+  message("================NOT HAVE pkgconfig")
 endmacro()
 
 

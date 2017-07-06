@@ -1,23 +1,13 @@
 #! /bin/bash
 
 TOP_DIR=$(pwd)
-OUT_SYSTEM_DIR=$TOP_DIR/out/system
+OUT_SYSTEM_DIR="/usr/local/"
 EXTRA_MODULE_PATH=$TOP_DIR/../opencv_contrib/modules/
 CLEAN_CMD=cleanthen
 
 [ -d $OUT_SYSTEM_DIR ] && rm -rf $OUT_SYSTEM_DIR && mkdir -p $OUT_SYSTEM_DIR
 
 logfile="/dev/null"
-check_cmd(){
-    "$@" >> $logfile 2>&1
-}
-check_cc(){
-  check_cmd arm-linux-gnueabihf-gcc -v
-}
-check_cc
-if [ $? -eq 127 ];then
-        export PATH=$PATH:$TOP_DIR/prebuilts/toolschain/bin
-fi
 
 # call cmake first
 export SDK_ROOT="$(pwd)"
@@ -38,7 +28,7 @@ cmake -DENABLE_NEON=ON \
       -DCMAKE_BUILD_TYPE=RELEASE \
       -DOPENCV_EXTRA_MODULES_PATH=$EXTRA_MODULE_PATH \
       -DCMAKE_INSTALL_PREFIX=$OUT_SYSTEM_DIR \
-      -DCMAKE_TOOLCHAIN_FILE=$SDK_ROOT/platforms/linux/rk3288.toolchain.cmake \
+      -DCMAKE_TOOLCHAIN_FILE=$SDK_ROOT/platforms/linux/arm-gnueabi.toolchain.cmake \
       ..
 
 
